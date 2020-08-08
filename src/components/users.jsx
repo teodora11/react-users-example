@@ -10,18 +10,9 @@ class Users extends Component {
         this.state = {
             persons: [],
             logged: false,
-            name: '',
-            email: ''
+            grade: '1'
         };
-        this.handleName = this.handleName.bind(this);
-        this.handleEmail = this.handleEmail.bind(this);
-    }
-
-    state = {
-        persons: [],
-        logged: false,
-        name: '',
-        email: ''
+        this.handleGrade = this.handleGrade.bind(this);
     }
 
     async componentDidMount() {
@@ -31,7 +22,17 @@ class Users extends Component {
         const data = await response.json();
         console.log(data);
         console.log(data[0].name);
-        this.setState({ persons: data, logged: true });
+
+        const storedData = localStorage.getItem('persons');
+        if (!storedData) {  //ako je storage prazan
+            console.log('Local storage is empty');
+            this.setState({ persons: data, logged: true });
+            localStorage.setItem('persons', JSON.stringify(data));
+        }
+        else {
+            const parsedData = JSON.parse(storedData);
+            this.setState({ persons: parsedData, logged: true });
+        }
     }
 
     render() {
@@ -58,6 +59,8 @@ class Users extends Component {
                                             person={item}
                                             onDelete={this.handleDelete}
                                             onEdit={this.handleEdit}
+                                            grade={this.state.grade}
+                                            onGrade={this.handleGrade}
                                         />
                                     )}
                                 </ul>
@@ -65,12 +68,7 @@ class Users extends Component {
                 } />
                 <Route path="/new-person" render={
                     () =>
-                        <Newuser
-                            newName={this.state.name}
-                            newEmail={this.state.email}
-                            changeName={this.handleName}
-                            changeEmail={this.handleEmail}
-                            onAdd={this.handleAdd} />
+                        <Newuser />
                 } />
             </div>
         );
@@ -99,19 +97,26 @@ class Users extends Component {
         }
         const persons = [...this.state.persons];
         persons.push(person);
+        localStorage.setItem('persons', JSON.stringify(persons));
         this.setState({ persons });
 
     }
 
-    handleName = (event) => {
-        this.setState({
-            name: event.target.value
-        });
-    }
+    /* handleName = (event) => {
+         this.setState({
+             name: event.target.value
+         });
+     }
+ 
+     handleEmail = (event) => {
+         this.setState({
+             email: event.target.value
+         });
+     }  */
 
-    handleEmail = (event) => {
+    handleGrade = (event) => {
         this.setState({
-            email: event.target.value
+            grade: event.target.value
         });
     }
 }
