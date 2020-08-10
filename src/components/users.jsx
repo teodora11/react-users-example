@@ -40,7 +40,7 @@ class Users extends Component {
         return (
             <div>
                 <Link to="/">RERSONS </Link>
-                <Link to="/new-person">NEW PERSON</Link>
+                <Link to="/new-person">ADD NEW PERSON</Link>
                 <Route path="/" exact render={
                     () =>
                         !this.state.logged ? (<div>Loading
