@@ -39,8 +39,8 @@ class Users extends Component {
         var { persons, logged } = this.state;
         return (
             <div>
-                <Link to="/">Persons </Link>
-                <Link to="/new-person">New person</Link>
+                <Link to="/">RERSONS </Link>
+                <Link to="/new-person">NEW PERSON</Link>
                 <Route path="/" exact render={
                     () =>
                         !this.state.logged ? (<div>Loading
